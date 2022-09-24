@@ -41,6 +41,7 @@ MonoBehaviour:
   - RespawnSpaceship
   - Instance
   - EnemyInstance
+  - MyInstance
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

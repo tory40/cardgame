@@ -24,24 +24,23 @@ public class IconEntity : ScriptableObject
     //‘Šè‚Ì–hŒä—Í‚ğQÆ
     public int deffence;
     //UŒ‚”»’è‚ÌŠm—¦‚Æ”{—¦
-    public int criticalhit;
-    public int criticalpower;
-    public int bighit;
-    public int bigpower;
-    public int normalhit;
-    public int normalpower;
-    public int smallhit;
-    public int smallpower;
-    public int misshit;
+    public float criticalhit;
+    public float criticalpower;
+    public float bighit;
+    public float bigpower;
+    public float normalhit;
+    public float normalpower;
+    public float smallhit;
+    public float smallpower;
     //ƒqƒbƒg”
     public int hit;
     //’Ç‰ÁUŒ‚”
     public int additionalhit;
     //–‚–@E‚Ì‰ñ•œAƒoƒŠƒA
-    public int healfixed;
+    public float healfixed;
     public int healpower;
-    public int barrierfixed;
+    public float barrierfixed;
     public int barrierpower;
     //ƒhƒŒƒCƒ“Š„‡
-    public int drain;
+    public float drain;
 }

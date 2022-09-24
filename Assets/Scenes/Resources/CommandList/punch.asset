@@ -13,28 +13,27 @@ MonoBehaviour:
   m_Name: punch
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: c0a01e1cfdac8e54a848eeae43897f09, type: 3}
-  time: 0
-  strtime: 0
-  inteltime: 0
-  dextime: 0
-  hp: 0
+  time: 10
+  strtime: 10
+  inteltime: 20
+  dextime: 30
+  hp: 5
   str: 0
   intel: 0
   dex: 0
-  power: 0
+  power: 30
   magic: 0
   speed: 0
-  deffence: 0
-  criticalhit: 0
-  criticalpower: 0
-  bighit: 0
-  bigpower: 0
-  normalhit: 0
-  normalpower: 0
-  smallhit: 0
-  smallpower: 0
-  misshit: 0
-  hit: 0
+  deffence: 10
+  criticalhit: 5
+  criticalpower: 3
+  bighit: 15
+  bigpower: 2
+  normalhit: 85
+  normalpower: 1
+  smallhit: 95
+  smallpower: 0.5
+  hit: 1
   additionalhit: 0
   healfixed: 0
   healpower: 0

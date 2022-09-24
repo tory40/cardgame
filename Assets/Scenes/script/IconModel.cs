@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class IconModel
 {
+    public string commandname;
+    public bool myact;
+    public bool open;
     public Sprite icon;
     public int time;
     public int strtime;
@@ -17,25 +20,25 @@ public class IconModel
     public int magic;
     public int speed;
     public int deffence;
-    public int criticalhit;
-    public int criticalpower;
-    public int bighit;
-    public int bigpower;
-    public int normalhit;
-    public int normalpower;
-    public int smallhit;
-    public int smallpower;
-    public int misshit;
+    public float criticalhit;
+    public float criticalpower;
+    public float bighit;
+    public float bigpower;
+    public float normalhit;
+    public float normalpower;
+    public float smallhit;
+    public float smallpower;
     public int hit;
     public int additionalhit;
-    public int healfixed;
+    public float healfixed;
     public int healpower;
-    public int barrierfixed;
+    public float barrierfixed;
     public int barrierpower;
-    public int drain;
+    public float drain;
     public IconModel(string iconID)
     {
         IconEntity iconEntity = Resources.Load<IconEntity>("CommandList/"+iconID);
+        commandname = iconID;
         icon = iconEntity.icon;
         time = iconEntity.time;
         strtime = iconEntity.strtime;
@@ -57,7 +60,6 @@ public class IconModel
         normalpower = iconEntity.normalpower;
         smallhit = iconEntity.smallhit;
         smallpower = iconEntity.smallpower;
-        misshit = iconEntity.misshit;
         hit = iconEntity.hit;
         additionalhit = iconEntity.additionalhit;
         healfixed = iconEntity.healfixed;
@@ -65,5 +67,7 @@ public class IconModel
         barrierfixed = iconEntity.barrierfixed;
         barrierpower = iconEntity.barrierpower;
         drain = iconEntity.drain;
+        open = false;
+        myact = false;
     }
 }
