@@ -42,6 +42,7 @@ MonoBehaviour:
   - Instance
   - EnemyInstance
   - MyInstance
+  - EnemyInstance2
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

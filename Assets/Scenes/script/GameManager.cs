@@ -7,6 +7,10 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+    List<string> mycommands = new List<string>();
+    [SerializeField] Transform mystatusfield;
+    [SerializeField] Transform enemystatusfield;
+    [SerializeField] StatusContoroller statussample;
     [SerializeField] Transform myfield;
     [SerializeField] Transform enemyfield;
     [SerializeField] Transform mycommand;
@@ -16,29 +20,43 @@ public class GameManager : MonoBehaviourPunCallbacks
     List<IconContoroller> enemyacts = new List<IconContoroller>();
     List<IconContoroller> actscommand = new List<IconContoroller>();
     List<IconContoroller> enemyactscommand = new List<IconContoroller>();
-    IconContoroller sendact;
+    string sendact;
     [SerializeField] Text[] intpower;
     [SerializeField] Text[] inteasy;
     [SerializeField] GameObject initbutton;
     [SerializeField] GameObject status;
-    MyStatus myStatus;
     float randomper;
     float criticalper;
     float bigper;
     float normalper;
     float smallper;
     float missper;
-    EnemyStatus enemyStatus;
+    StatusContoroller mystatus;
+    StatusContoroller enemystatus;
+    StatusModel statusA;
+    StatusModel statusB;
+
     // Start is called before the first frame update
     public void Start()
     {
-        myStatus = status.gameObject.GetComponent<MyStatus>();
-        enemyStatus = status.gameObject.GetComponent<EnemyStatus>();
+        mystatus = Instantiate(statussample, mystatusfield, false);
+        mystatus.Init();
+        enemystatus = Instantiate(statussample, enemystatusfield, false);
+        enemystatus.Init();
+    }
+    public void ChangeWork()
+    {
+        for (int i=0; i < mycommands.Count; ++i)
+        {
+            MyInstance(mycommands[i]);
+            photonView.RPC(nameof(EnemyInstance), RpcTarget.Others, mycommands[i]);
+        }
     }
     public void AAA()
     {
-        MyInstance();
-        photonView.RPC(nameof(EnemyInstance), RpcTarget.Others);
+        mycommands.Add("punch");
+        mycommands.Add("kick");
+        ChangeWork();
     }
 
     // Update is called once per frame
@@ -46,30 +64,24 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         
     }
-    [PunRPC]
-    public void MyInstance()
+    public void MyInstance(string command)
     {
             IconContoroller act = Instantiate(actprefab, myfield, false);
-            act.Init("punch");
+            act.Init(command);
             act.Open();
             acts.Add(act);
     }
     [PunRPC]
-    public void EnemyInstance()
+    public void EnemyInstance(string command)
     {
             IconContoroller act = Instantiate(actprefab, enemyfield, false);
-            act.Init("punch");
+            act.Init(command);
             enemyacts.Add(act);
     }
-    public void Debu(IconContoroller icon)
-    {
-        IconContoroller act = Instantiate(icon, mycommand, false);
-        actscommand.Add(act);
-    }
     
-    public void SetCommand(IconContoroller act,IconModel model)
+    public void SetCommand(IconModel model)
     {
-        sendact = act;
+        sendact = model.commandname;
         if(model.open)
         {
             initbutton.gameObject.SetActive(true);
@@ -91,62 +103,63 @@ public class GameManager : MonoBehaviourPunCallbacks
         intpower[5].text = model.str.ToString();
         intpower[6].text = model.intel.ToString();
         intpower[7].text = model.dex.ToString();
-        intpower[8].text = model.healfixed.ToString();
+        intpower[8].text = model.healfixed.ToString("0.0");
         intpower[9].text = model.healpower.ToString();
-        intpower[10].text = model.barrierfixed.ToString();
+        intpower[10].text = model.barrierfixed.ToString("0.0");
         intpower[11].text = model.barrierpower.ToString();
         intpower[12].text = model.power.ToString();
         intpower[13].text = model.magic.ToString();
         intpower[14].text = model.speed.ToString();
         intpower[15].text = model.deffence.ToString();
         intpower[16].text = model.criticalhit.ToString();
-        intpower[17].text = model.criticalpower.ToString();
+        intpower[17].text = model.criticalpower.ToString("0.0");
         intpower[18].text = model.bighit.ToString();
-        intpower[19].text = model.bigpower.ToString();
+        intpower[19].text = model.bigpower.ToString("0.0");
         intpower[20].text = model.normalhit.ToString();
-        intpower[21].text = model.normalpower.ToString();
+        intpower[21].text = model.normalpower.ToString("0.0");
         intpower[22].text = model.smallhit.ToString();
-        intpower[23].text = model.smallpower.ToString();
+        intpower[23].text = model.smallpower.ToString("0.0");
         intpower[24].text = model.hit.ToString();
         intpower[25].text = model.additionalhit.ToString();
-        intpower[26].text = model.drain.ToString();
+        intpower[26].text = model.drain.ToString("0.00");
     }
     int phy;
+    float additional;
     public void SetRule2(IconModel model)
     {
         if(model.myact)
         {
-            MyStatus statusA = myStatus;
-            EnemyStatus statusB = enemyStatus;
+            statusA = mystatus.statusmodel;
+            statusB = enemystatus.statusmodel;
         }
         else
         {
-            MyStatus statusB = myStatus;
-            EnemyStatus statusA = enemyStatus;
+            statusB = mystatus.statusmodel;
+            statusA = enemystatus.statusmodel;
         }
         inteasy[0].text = model.commandname;
-        inteasy[1].text = ((model.time) + ((model.strtime) / (myStatus.sTR)) + ((model.inteltime) / (myStatus.iNT)) + ((model.dextime) / (myStatus.dEX))).ToString()+"sec";
+        inteasy[1].text = ((model.time) + ((model.strtime) / (statusA.sTR)) + ((model.inteltime) / (statusA.iNT)) + ((model.dextime) / (statusA.dEX))).ToString("0.0")+"sec";
         inteasy[2].text = model.hp.ToString();
         inteasy[3].text = model.str.ToString();
         inteasy[4].text = model.intel.ToString();
         inteasy[5].text = model.dex.ToString();
-        inteasy[6].text = (((model.healfixed) * (myStatus.maxHp)) + ((model.healpower) * (myStatus.iNT))).ToString();
-        inteasy[7].text = (((model.barrierfixed) * (myStatus.maxHp)) + ((model.barrierpower) * (myStatus.iNT))).ToString();
+        inteasy[6].text = (((model.healfixed) * (statusA.maxHp)) + ((model.healpower) * (statusA.iNT))).ToString();
+        inteasy[7].text = (((model.barrierfixed) * (statusA.maxHp)) + ((model.barrierpower) * (statusA.iNT))).ToString();
         if((model.power+model.speed)==0)
         {
             phy = 0;
         }
-        else if (((model.power) * (myStatus.sTR)) + ((model.speed) * (myStatus.dEX)) - ((model.deffence) * (enemyStatus.sTR))<1)
+        else if (((model.power) * (statusA.sTR)) + ((model.speed) * (statusA.dEX)) - ((model.deffence) * (statusB.sTR))<1)
         {
             phy = 1;
         }
         else
         {
-            phy = ((model.power) * (myStatus.sTR)) + ((model.speed) * (myStatus.dEX)) - ((model.deffence) * (enemyStatus.sTR));
+            phy = ((model.power) * (statusA.sTR)) + ((model.speed) * (statusA.dEX)) - ((model.deffence) * (statusB.sTR));
         }
-        inteasy[8].text = (phy + ((model.magic) * (myStatus.iNT))).ToString();
-        inteasy[9].text = "~"+model.criticalpower.ToString();
-        randomper = (enemyStatus.dEX) / (myStatus.dEX) * 100;
+        inteasy[8].text = (phy + ((model.magic) * (statusA.iNT))).ToString();
+        inteasy[9].text = "~"+model.criticalpower.ToString("0.0");
+        randomper = (statusB.dEX) / (statusA.dEX) * 100;
         if (randomper<model.criticalhit)
         {
             criticalper = 100f;
@@ -155,8 +168,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             criticalper = (model.criticalhit / randomper) * 100;
         }
-        inteasy[10].text = criticalper.ToString();
-        inteasy[11].text = "~" + model.bigpower.ToString();
+        inteasy[10].text = criticalper.ToString("0.0")+"%";
+        inteasy[11].text = "~" + model.bigpower.ToString("0.0");
         if (randomper < model.criticalhit)
         {
             bigper = 0f;
@@ -169,8 +182,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             bigper = ((randomper - model.criticalhit) / randomper * 100);
         }
-        inteasy[12].text = bigper.ToString();
-        inteasy[13].text = "~" + model.normalpower.ToString();
+        inteasy[12].text = bigper.ToString("0.0")+"%";
+        inteasy[13].text = "~" + model.normalpower.ToString("0.0");
         if (randomper < model.bighit)
         {
             normalper = 0f;
@@ -183,8 +196,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             normalper = ((randomper - model.bighit) / randomper * 100);
         }
-        inteasy[14].text = normalper.ToString();
-        inteasy[15].text = "~" + model.smallpower.ToString();
+        inteasy[14].text = normalper.ToString("0.0")+"%";
+        inteasy[15].text = "~" + model.smallpower.ToString("0.0");
         if (randomper < model.normalhit)
         {
             smallper = 0f;
@@ -197,7 +210,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             smallper = ((randomper - model.normalhit) / randomper * 100);
         }
-        inteasy[16].text = smallper.ToString();
+        inteasy[16].text = smallper.ToString("0.0")+"%";
         if (randomper < model.smallhit)
         {
             missper = 0f;
@@ -206,7 +219,55 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             missper = ((randomper - model.smallhit) / randomper * 100);
         }
-        inteasy[17].text = missper.ToString();
-        inteasy[18].text = (model.hit + (myStatus.dEX / model.additionalhit)).ToString();
+        inteasy[17].text = missper.ToString("0.0")+"%";
+        if(model.additionalhit!=0)
+        {
+            additional = statusA.dEX / model.additionalhit;
+        }
+        else
+        {
+            additional = 0;
+        }
+        inteasy[18].text = (model.hit + additional).ToString("0.00");
+    }
+    public void CommandAttack()
+    {
+        MyInstance2(sendact);
+        photonView.RPC(nameof(EnemyInstance2), RpcTarget.Others, sendact);
+    }
+
+    public void MyInstance2(string command)
+    {
+        IconContoroller act = Instantiate(actprefab, mycommand, false);
+        act.Init(command);
+        act.Mine();
+        actscommand.Add(act);
+        if(actscommand.Count ==1)
+        {
+            MyCommandView();
+        }
+    }
+    [PunRPC]
+    public void EnemyInstance2(string command)
+    {
+        IconContoroller act = Instantiate(actprefab, enemycommand, false);
+        act.Init(command);
+        enemyactscommand.Add(act);
+        if (enemyactscommand.Count == 1)
+        {
+            EnemyCommandView();
+        }
+    }
+    public void MyCommandView()
+    {
+        IconModel model = actscommand[0].GetComponent<IconContoroller>().model;
+        float time = model.time + (model.strtime / mystatus.statusmodel.sTR) + (model.inteltime / mystatus.statusmodel.iNT) + (model.dextime / mystatus.statusmodel.dEX);
+        actscommand[0].SetStart(time);
+    }
+    public void EnemyCommandView()
+    {
+        IconModel model = enemyactscommand[0].GetComponent<IconContoroller>().model;
+        float time = model.time + (model.strtime / enemystatus.statusmodel.sTR) + (model.inteltime / enemystatus.statusmodel.iNT) + (model.dextime / enemystatus.statusmodel.dEX);
+        enemyactscommand[0].SetStart(time);
     }
 }

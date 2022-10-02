@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class IconContoroller : MonoBehaviour
 {
-    IconModel model;
-    IconView view;
+    public IconModel model;
+    public IconView view;
     GameManager gameManager;
     private void Start()
     {
@@ -25,8 +25,16 @@ public class IconContoroller : MonoBehaviour
         model.open = true;
         model.myact = true;
     }
+    public void Mine()
+    {
+        model.myact = true;
+    }
     public void Click()
     {
-        gameManager.SetCommand(this,model);
+        gameManager.SetCommand(model);
+    }
+    public void SetStart(float time)
+    {
+        view.SetTime(time);
     }
 }
