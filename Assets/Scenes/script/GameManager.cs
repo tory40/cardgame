@@ -33,16 +33,20 @@ public class GameManager : MonoBehaviourPunCallbacks
     float missper;
     StatusContoroller mystatus;
     StatusContoroller enemystatus;
-    StatusModel statusA;
-    StatusModel statusB;
+    [SerializeField] Image playercolor;
 
+    Dictionary<string, List<string>> commandSet = new Dictionary<string, List<string>>()
+    {
+        {"jobA", new List<string>(){"punch","kick" }},
+        {"jobB", new List<string>(){"kick","kick" }},
+    };
     // Start is called before the first frame update
     public void Start()
     {
         mystatus = Instantiate(statussample, mystatusfield, false);
-        mystatus.Init();
+        mystatus.Init(true);
         enemystatus = Instantiate(statussample, enemystatusfield, false);
-        enemystatus.Init();
+        enemystatus.Init(false);
     }
     public void ChangeWork()
     {
@@ -52,10 +56,14 @@ public class GameManager : MonoBehaviourPunCallbacks
             photonView.RPC(nameof(EnemyInstance), RpcTarget.Others, mycommands[i]);
         }
     }
-    public void AAA()
+    public void AAA(string job)
     {
-        mycommands.Add("punch");
-        mycommands.Add("kick");
+        foreach(Transform child in myfield)
+        {
+            Destroy(child.gameObject);
+        }
+        mycommands.Clear();
+        mycommands = new List<string>(commandSet[job]);
         ChangeWork();
     }
 
@@ -91,7 +99,14 @@ public class GameManager : MonoBehaviourPunCallbacks
             initbutton.gameObject.SetActive(false);
         }
         SetRule(model);
-        SetRule2(model);
+        if (model.myact)
+        {
+            SetRule2(model,mystatus.statusmodel,enemystatus.statusmodel);
+        }
+        else
+        {
+            SetRule2(model,enemystatus.statusmodel, mystatus.statusmodel);
+        }
     }
     public void SetRule(IconModel model)
     {
@@ -125,18 +140,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     int phy;
     float additional;
-    public void SetRule2(IconModel model)
+    public void SetRule2(IconModel model,StatusModel statusA,StatusModel statusB)
     {
-        if(model.myact)
-        {
-            statusA = mystatus.statusmodel;
-            statusB = enemystatus.statusmodel;
-        }
-        else
-        {
-            statusB = mystatus.statusmodel;
-            statusA = enemystatus.statusmodel;
-        }
+        playercolor.color = statusA.color;
         inteasy[0].text = model.commandname;
         inteasy[1].text = ((model.time) + ((model.strtime) / (statusA.sTR)) + ((model.inteltime) / (statusA.iNT)) + ((model.dextime) / (statusA.dEX))).ToString("0.0")+"sec";
         inteasy[2].text = model.hp.ToString();
@@ -211,7 +217,11 @@ public class GameManager : MonoBehaviourPunCallbacks
             smallper = ((randomper - model.normalhit) / randomper * 100);
         }
         inteasy[16].text = smallper.ToString("0.0")+"%";
-        if (randomper < model.smallhit)
+        if(model.smallhit == 0)
+        {
+            missper = 0f;
+        }
+        else if (randomper < model.smallhit)
         {
             missper = 0f;
         }
@@ -269,5 +279,39 @@ public class GameManager : MonoBehaviourPunCallbacks
         IconModel model = enemyactscommand[0].GetComponent<IconContoroller>().model;
         float time = model.time + (model.strtime / enemystatus.statusmodel.sTR) + (model.inteltime / enemystatus.statusmodel.iNT) + (model.dextime / enemystatus.statusmodel.dEX);
         enemyactscommand[0].SetStart(time);
+    }
+    public void Actcommand(IconModel model)
+    {
+        if (model.myact)
+        {
+            Destroy(actscommand[0].gameObject);
+            actscommand.RemoveAt(0);
+            if (actscommand.Count>0)
+            {
+                IconModel nextmodel = actscommand[0].GetComponent<IconContoroller>().model;
+                float time = nextmodel.time + (nextmodel.strtime / mystatus.statusmodel.sTR) + (nextmodel.inteltime / mystatus.statusmodel.iNT) + (nextmodel.dextime / mystatus.statusmodel.dEX);
+                actscommand[0].SetStart(time);
+            }
+            Actprocess(mystatus, enemystatus, model);
+        }
+        else
+        {
+            Destroy(enemyactscommand[0].gameObject);
+            enemyactscommand.RemoveAt(0);
+            if (enemyactscommand.Count>0)
+            {
+                IconModel nextmodel = enemyactscommand[0].GetComponent<IconContoroller>().model;
+                float time = nextmodel.time + (nextmodel.strtime / enemystatus.statusmodel.sTR) + (nextmodel.inteltime / enemystatus.statusmodel.iNT) + (nextmodel.dextime / enemystatus.statusmodel.dEX);
+                enemyactscommand[0].SetStart(time);
+            }
+            Actprocess(enemystatus, mystatus, model);
+        }
+    }
+    public void Actprocess(StatusContoroller statusA,StatusContoroller statusB,IconModel model)
+    {
+        statusA.ChangeMaxHP(model.hp);
+        statusA.ChangeSTR(model.str);
+        statusA.ChangeINT(model.intel);
+        statusA.ChangeDEX(model.dex);
     }
 }

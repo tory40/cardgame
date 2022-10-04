@@ -10,6 +10,12 @@ public class IconContoroller : MonoBehaviour
     private void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        view.OnEndAction = OnEndAction;
+    }
+
+    void OnEndAction()
+    {
+        gameManager.Actcommand(model);
     }
     private void Awake()
     {

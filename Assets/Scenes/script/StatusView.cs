@@ -10,6 +10,7 @@ public class StatusView : MonoBehaviour
     [SerializeField] Text sTRtext;
     [SerializeField] Text iNTtext;
     [SerializeField] Text dEXtext;
+    [SerializeField] Image color;
     public void Show(StatusModel model)
     {
         maxHptext.text = model.maxHp.ToString();
@@ -17,5 +18,6 @@ public class StatusView : MonoBehaviour
         sTRtext.text = model.sTR.ToString();
         iNTtext.text = model.iNT.ToString();
         dEXtext.text = model.dEX.ToString();
+        color.color = model.color;
     }
 }

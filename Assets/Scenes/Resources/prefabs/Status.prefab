@@ -251,6 +251,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98556a0fd2a98144091fc1b02e424e0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statusview: {fileID: 0}
 --- !u!114 &9565949249648039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,6 +269,7 @@ MonoBehaviour:
   sTRtext: {fileID: 6069425345975869193}
   iNTtext: {fileID: 4289319743410413069}
   dEXtext: {fileID: 3367777636861388688}
+  color: {fileID: 4553626527099234381}
 --- !u!1 &2795056131221409474
 GameObject:
   m_ObjectHideFlags: 0

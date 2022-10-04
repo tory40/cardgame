@@ -14,34 +14,34 @@ public class StatusContoroller : MonoBehaviour
     {
 
     }
-    public void Init()
+    public void Init(bool mine)
     {
-        statusmodel = new StatusModel();
+        statusmodel = new StatusModel(mine);
         statusview.Show(statusmodel);
     }
-    void ChangeMaxHP(int change)
+    public void ChangeMaxHP(int change)
     {
         statusmodel.HPper = statusmodel.restHp / statusmodel.maxHp;
         statusmodel.maxHp += change;
         statusmodel.restHp = statusmodel.maxHp * statusmodel.HPper;
         statusview.Show(statusmodel);
     }
-    void ChangeDamage(int change)
+    public void ChangeDamage(int change)
     {
         statusmodel.restHp -= change;
         statusview.Show(statusmodel);
     }
-    void ChangeSTR(int change)
+    public void ChangeSTR(int change)
     {
         statusmodel.sTR += change;
         statusview.Show(statusmodel);
     }
-    void ChangeINT(int change)
+    public void ChangeINT(int change)
     {
         statusmodel.iNT += change;
         statusview.Show(statusmodel);
     }
-    void ChangeDEX(int change)
+    public void ChangeDEX(int change)
     {
         statusmodel.dEX += change;
         statusview.Show(statusmodel);
