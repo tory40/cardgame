@@ -23,12 +23,26 @@ public class StatusContoroller : MonoBehaviour
     {
         statusmodel.HPper = statusmodel.restHp / statusmodel.maxHp;
         statusmodel.maxHp += change;
-        statusmodel.restHp = statusmodel.maxHp * statusmodel.HPper;
+        statusmodel.restHp = (int)(statusmodel.maxHp * statusmodel.HPper);
         statusview.Show(statusmodel);
     }
     public void ChangeDamage(int change)
     {
         statusmodel.restHp -= change;
+        statusview.Show(statusmodel);
+    }
+    public void ChangeHeal(int change)
+    {
+        statusmodel.restHp += change;
+        if(statusmodel.restHp>statusmodel.maxHp)
+        {
+            statusmodel.restHp = statusmodel.maxHp;
+        }
+        statusview.Show(statusmodel);
+    }
+    public void ChangeBarrier(int change)
+    {
+        statusmodel.barrier += change;
         statusview.Show(statusmodel);
     }
     public void ChangeSTR(int change)

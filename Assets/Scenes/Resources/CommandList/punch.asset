@@ -17,7 +17,7 @@ MonoBehaviour:
   strtime: 10
   inteltime: 20
   dextime: 30
-  hp: 5
+  hp: 0
   str: 0
   intel: 0
   dex: 0

@@ -43,6 +43,9 @@ MonoBehaviour:
   - EnemyInstance
   - MyInstance
   - EnemyInstance2
+  - BBB
+  - EnemyActprocess
+  - Enemydamage
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

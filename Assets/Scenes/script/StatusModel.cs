@@ -5,12 +5,13 @@ using UnityEngine;
 public class StatusModel
 {
     public int maxHp;
-    public float restHp;
+    public int restHp;
     public int sTR;
     public int iNT;
     public int dEX;
     public float HPper;
     public Color color;
+    public int barrier;
     public StatusModel(bool mine)
     {
         maxHp = 100;

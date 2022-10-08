@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public void ChangeWork()
     {
-        for (int i=0; i < mycommands.Count; ++i)
+        for (int i = 0; i < mycommands.Count; ++i)
         {
             MyInstance(mycommands[i]);
             photonView.RPC(nameof(EnemyInstance), RpcTarget.Others, mycommands[i]);
@@ -58,13 +58,22 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public void AAA(string job)
     {
-        foreach(Transform child in myfield)
+        foreach (Transform child in myfield)
         {
             Destroy(child.gameObject);
         }
+        photonView.RPC(nameof(BBB), RpcTarget.Others);
         mycommands.Clear();
         mycommands = new List<string>(commandSet[job]);
         ChangeWork();
+    }
+    [PunRPC]
+    public void BBB()
+    {
+        foreach (Transform child in enemyfield)
+        {
+            Destroy(child.gameObject);
+        }
     }
 
     // Update is called once per frame
@@ -292,7 +301,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                 float time = nextmodel.time + (nextmodel.strtime / mystatus.statusmodel.sTR) + (nextmodel.inteltime / mystatus.statusmodel.iNT) + (nextmodel.dextime / mystatus.statusmodel.dEX);
                 actscommand[0].SetStart(time);
             }
-            Actprocess(mystatus, enemystatus, model);
+            Actprocess(mystatus,model);
         }
         else
         {
@@ -304,14 +313,142 @@ public class GameManager : MonoBehaviourPunCallbacks
                 float time = nextmodel.time + (nextmodel.strtime / enemystatus.statusmodel.sTR) + (nextmodel.inteltime / enemystatus.statusmodel.iNT) + (nextmodel.dextime / enemystatus.statusmodel.dEX);
                 enemyactscommand[0].SetStart(time);
             }
-            Actprocess(enemystatus, mystatus, model);
+            Actprocess(enemystatus,model);
         }
     }
-    public void Actprocess(StatusContoroller statusA,StatusContoroller statusB,IconModel model)
+    float hitinit;
+    int hitcount;
+    float randomserect;
+    float damage;
+    float hitrange;
+    public void Actprocess(StatusContoroller statusA, IconModel model)
     {
         statusA.ChangeMaxHP(model.hp);
         statusA.ChangeSTR(model.str);
         statusA.ChangeINT(model.intel);
         statusA.ChangeDEX(model.dex);
+        statusA.ChangeHeal((int)((model.healpower * statusA.statusmodel.iNT) + (model.healfixed * statusA.statusmodel.maxHp)));
+        statusA.ChangeBarrier((int)((model.barrierpower * statusA.statusmodel.iNT) + (model.barrierfixed * statusA.statusmodel.maxHp)));
+        if(model.myact)
+        {
+            Mydamage(model);
+        }
+    }
+    public void Mydamage(IconModel model)
+    {
+        if (model.additionalhit == 0)
+        {
+            hitinit = model.hit;
+        }
+        else
+        {
+            hitinit = model.hit + (mystatus.statusmodel.dEX / model.additionalhit);
+        }
+        hitcount = (int)hitinit;
+        randomserect = Random.Range(0.00f, 1.00f);
+        if (randomserect < hitinit % 1)
+        {
+            hitcount++;
+        }
+        damage = (model.power * mystatus.statusmodel.sTR) + (model.speed * mystatus.statusmodel.dEX) - (model.deffence * enemystatus.statusmodel.sTR);
+        if (model.power == 0 && model.speed == 0)
+        {
+            damage = 0;
+        }
+        else if (((model.power * mystatus.statusmodel.sTR) + (model.speed * mystatus.statusmodel.dEX) - (model.deffence * enemystatus.statusmodel.sTR)) < 1)
+        {
+            damage = 1;
+        }
+        damage = damage + (model.magic * mystatus.statusmodel.iNT);
+        for (int i = 0; i < hitcount; ++i)
+        {
+            hitrange = Random.Range(0.00f, (100 * enemystatus.statusmodel.dEX / mystatus.statusmodel.dEX));
+            if (hitrange < model.criticalhit)
+            {
+                enemystatus.ChangeDamage((int)(damage * model.criticalpower));
+                if (model.drain != 0)
+                {
+                    mystatus.ChangeHeal((int)(model.drain * damage * model.criticalpower));
+                }
+            }
+            else if (hitrange < model.bighit)
+            {
+                enemystatus.ChangeDamage((int)(damage * model.bigpower));
+                if (model.drain != 0)
+                {
+                    mystatus.ChangeHeal((int)(model.drain * damage * model.bigpower));
+                }
+            }
+            else if (hitrange < model.normalhit)
+            {
+                enemystatus.ChangeDamage((int)(damage * model.normalpower));
+                if (model.drain != 0)
+                {
+                    mystatus.ChangeHeal((int)(model.drain * damage * model.normalpower));
+                }
+            }
+            else if (hitrange < model.smallhit)
+            {
+                enemystatus.ChangeDamage((int)(damage * model.smallpower));
+                if (model.drain != 0)
+                {
+                    mystatus.ChangeHeal((int)(model.drain * damage * model.smallpower));
+                }
+            }
+            else
+            {
+                enemystatus.ChangeDamage(0);
+                if (model.drain != 0)
+                {
+                    mystatus.ChangeHeal(0);
+                }
+            }
+            photonView.RPC(nameof(Enemydamage), RpcTarget.Others, model.commandname,hitrange,damage);
+        }
+    }
+    [PunRPC]
+    public void Enemydamage(string acter,float hitrange,float actdamage)
+    {
+        IconEntity iconEntity = Resources.Load<IconEntity>("CommandList/" + acter);
+        if (hitrange < iconEntity.criticalhit)
+        {
+            mystatus.ChangeDamage((int)(actdamage * iconEntity.criticalpower));
+            if (iconEntity.drain != 0)
+            {
+                enemystatus.ChangeHeal((int)(iconEntity.drain * actdamage * iconEntity.criticalpower));
+            }
+        }
+        else if (hitrange < iconEntity.bighit)
+        {
+            mystatus.ChangeDamage((int)(actdamage * iconEntity.bigpower));
+            if (iconEntity.drain != 0)
+            {
+                enemystatus.ChangeHeal((int)(iconEntity.drain * actdamage * iconEntity.bigpower));
+            }
+        }
+        else if (hitrange < iconEntity.normalhit)
+        {
+            mystatus.ChangeDamage((int)(actdamage * iconEntity.normalpower));
+            if (iconEntity.drain != 0)
+            {
+                enemystatus.ChangeHeal((int)(iconEntity.drain * actdamage * iconEntity.normalpower));
+            }
+        }
+        else if (hitrange < iconEntity.smallhit)
+        {
+            mystatus.ChangeDamage((int)(actdamage * iconEntity.smallpower));
+            if (iconEntity.drain != 0)
+            {
+                enemystatus.ChangeHeal((int)(iconEntity.drain * actdamage * iconEntity.smallpower));
+            }
+        }
+        else
+        {
+            mystatus.ChangeDamage(0);
+            if (iconEntity.drain != 0)
+            {
+                enemystatus.ChangeHeal(0);
+            }
+        }
     }
 }
