@@ -22,8 +22,9 @@ public class StatusContoroller : MonoBehaviour
     public void ChangeMaxHP(int change)
     {
         statusmodel.HPper = statusmodel.restHp / statusmodel.maxHp;
-        statusmodel.maxHp += change;
-        statusmodel.restHp = (int)(statusmodel.maxHp * statusmodel.HPper);
+        statusmodel.normalHp += change;
+        statusmodel.maxHp = statusmodel.normalHp * statusmodel.Hplevel;
+        statusmodel.restHp = statusmodel.maxHp * statusmodel.HPper;
         statusview.Show(statusmodel);
     }
     public void ChangeDamage(int change)

@@ -13,8 +13,8 @@ public class StatusView : MonoBehaviour
     [SerializeField] Image color;
     public void Show(StatusModel model)
     {
-        maxHptext.text = model.maxHp.ToString();
-        restHptext.text = model.restHp.ToString();
+        maxHptext.text = model.maxHp.ToString("0.");
+        restHptext.text = model.restHp.ToString("0.");
         sTRtext.text = model.sTR.ToString();
         iNTtext.text = model.iNT.ToString();
         dEXtext.text = model.dEX.ToString();

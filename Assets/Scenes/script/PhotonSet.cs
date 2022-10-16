@@ -5,6 +5,7 @@ using UnityEngine;
 // MonoBehaviourPunCallbacksを継承して、PUNのコールバックを受け取れるようにする
 public class PhotonSet : MonoBehaviourPunCallbacks
 {
+    GameManager gameManager;
     private void Start()
     {
         // PhotonServerSettingsの設定内容を使ってマスターサーバーへ接続する
@@ -21,6 +22,7 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     // ゲームサーバーへの接続が成功した時に呼ばれるコールバック
     public override void OnJoinedRoom()
     {
-        
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        gameManager.StartGame();
     }
 }

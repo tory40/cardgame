@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class StatusModel
 {
-    public int maxHp;
-    public int restHp;
+    public float Hplevel;
+    public int normalHp;
+    public float maxHp;
+    public float restHp;
     public int sTR;
     public int iNT;
     public int dEX;
@@ -14,8 +16,9 @@ public class StatusModel
     public int barrier;
     public StatusModel(bool mine)
     {
-        maxHp = 100;
-        restHp = 100;
+        Hplevel = 1;
+        maxHp = 1000;
+        restHp = 1000;
         sTR = 10;
         iNT = 10;
         dEX = 10;

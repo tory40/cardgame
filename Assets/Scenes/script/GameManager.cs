@@ -34,13 +34,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     StatusContoroller mystatus;
     StatusContoroller enemystatus;
     [SerializeField] Image playercolor;
-
-    Dictionary<string, List<string>> commandSet = new Dictionary<string, List<string>>()
-    {
-        {"jobA", new List<string>(){"punch","kick" }},
-        {"jobB", new List<string>(){"kick","kick" }},
-    };
-    // Start is called before the first frame update
     public void Start()
     {
         mystatus = Instantiate(statussample, mystatusfield, false);
@@ -56,7 +49,18 @@ public class GameManager : MonoBehaviourPunCallbacks
             photonView.RPC(nameof(EnemyInstance), RpcTarget.Others, mycommands[i]);
         }
     }
-    public void AAA(string job)
+    public void StartGame()
+    {
+        photonView.RPC(nameof(StartJob), RpcTarget.Others, "Adventurer");
+    }
+    [PunRPC]
+    public void StartJob(string job)
+    {
+        ChangeJob(job);
+        photonView.RPC(nameof(ChangeJob), RpcTarget.Others, job);
+    }
+    [PunRPC]
+    public void ChangeJob(string job)
     {
         foreach (Transform child in myfield)
         {
@@ -64,7 +68,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         photonView.RPC(nameof(BBB), RpcTarget.Others);
         mycommands.Clear();
-        mycommands = new List<string>(commandSet[job]);
+        JobEntity jobEntity = Resources.Load<JobEntity>("JobList/" + job);
+        mycommands = new List<string>(jobEntity.commandlist);
         ChangeWork();
     }
     [PunRPC]
