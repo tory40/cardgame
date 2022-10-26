@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] Transform mycommand;
     [SerializeField] Transform enemycommand;
     [SerializeField] IconContoroller actprefab;
+    [SerializeField] JobChangeContoroller jobChangeprefab;
     List<IconContoroller> acts = new List<IconContoroller>();
     List<IconContoroller> enemyacts = new List<IconContoroller>();
     List<IconContoroller> actscommand = new List<IconContoroller>();
@@ -55,12 +56,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public void MyJobInstance()
     {
-
+        JobChangeContoroller jobChange = Instantiate(jobChangeprefab, myfield, false);
+        jobChange.mine = true;
     }
     [PunRPC]
     public void EnemyJobInstance()
     {
-
+        JobChangeContoroller jobChange = Instantiate(jobChangeprefab, enemyfield, false);
+        jobChange.mine = false;
     }
     [PunRPC]
     public void EnemyJobName(string jobname)
@@ -118,7 +121,23 @@ public class GameManager : MonoBehaviourPunCallbacks
             act.Init(command);
             enemyacts.Add(act);
     }
-    
+    [SerializeField] GameObject myopen;
+    [SerializeField] GameObject myclose;
+    [SerializeField] GameObject enemyopen;
+    [SerializeField] GameObject enemyclose;
+    public void JobClick(bool mine)
+    {
+        if (mine)
+        {
+            myopen.SetActive(true);
+            myclose.SetActive(false);
+        }
+        else
+        {
+            enemyopen.SetActive(true);
+            enemyclose.SetActive(false);
+        }
+    }
     public void SetCommand(IconModel model)
     {
         sendact = model.commandname;

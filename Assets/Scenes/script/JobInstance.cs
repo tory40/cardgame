@@ -9,6 +9,7 @@ public class JobInstance : MonoBehaviour
     [SerializeField] Transform parent;
     [SerializeField] List<JobEntity> jobentitys;
     List<JobContoroller> jobEntityLists = new List<JobContoroller>();
+    public bool mine;
     private void Start()
     {
         foreach(var jobEntity in jobentitys)
@@ -19,6 +20,7 @@ public class JobInstance : MonoBehaviour
     public JobContoroller Spawn(JobEntity jobentity)
     {
         JobContoroller jobs = Instantiate(serectjobprefab, parent);
+        jobs.mine = mine;
         jobs.Set(jobentity);
         jobs.ChangeColor();
         jobEntityLists.Add(jobs);

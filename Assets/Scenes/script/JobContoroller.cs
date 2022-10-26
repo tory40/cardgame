@@ -9,6 +9,7 @@ public class JobContoroller : MonoBehaviour
     public JobView jobview;
     public UnityAction<JobEntity> OnClickAction;
     JobCondition jobCondition;
+    public bool mine;
     void Start()
     {
         

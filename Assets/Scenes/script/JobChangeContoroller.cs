@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class JobChangeContoroller : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public bool mine;
+    public void Click()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        GameObject.Find("GameManager").GetComponent<GameManager>().JobClick(mine);
     }
 }

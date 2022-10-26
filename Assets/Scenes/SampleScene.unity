@@ -1452,6 +1452,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e054fad535e9038408b007ab1c51ca69, type: 2}
   - {fileID: 11400000, guid: 72b7f5cdde6d9cf4c918f57d4a1668da, type: 2}
   - {fileID: 11400000, guid: e7e84d747553acb49bf3f4ce9d299180, type: 2}
+  mine: 1
 --- !u!1 &187689312
 GameObject:
   m_ObjectHideFlags: 0
@@ -3261,7 +3262,7 @@ RectTransform:
   - {fileID: 487725944}
   - {fileID: 1404429654}
   m_Father: {fileID: 1605056680}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3734,6 +3735,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e054fad535e9038408b007ab1c51ca69, type: 2}
   - {fileID: 11400000, guid: 72b7f5cdde6d9cf4c918f57d4a1668da, type: 2}
   - {fileID: 11400000, guid: e7e84d747553acb49bf3f4ce9d299180, type: 2}
+  mine: 0
 --- !u!114 &471423089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4671,6 +4673,7 @@ MonoBehaviour:
   mycommand: {fileID: 67957837}
   enemycommand: {fileID: 1657921889}
   actprefab: {fileID: 8578102508377971035, guid: 56b41c95784f7da4e89222938dd81fcf, type: 3}
+  jobChangeprefab: {fileID: 8687243574874986387, guid: 67b5f40d6c4076c47a2f1e956f574d4e, type: 3}
   intpower:
   - {fileID: 1774815991}
   - {fileID: 339374847}
@@ -4724,6 +4727,10 @@ MonoBehaviour:
   playercolor: {fileID: 1605056681}
   myjobname: {fileID: 1554040446}
   enemyjobname: {fileID: 2116715768}
+  myopen: {fileID: 177613885}
+  myclose: {fileID: 78428964}
+  enemyopen: {fileID: 471423086}
+  enemyclose: {fileID: 2025523317}
 --- !u!4 &596764813
 Transform:
   m_ObjectHideFlags: 0
@@ -9212,7 +9219,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1540257951
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9232,7 +9239,7 @@ RectTransform:
   - {fileID: 321684510}
   - {fileID: 786715357}
   m_Father: {fileID: 1605056680}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -9882,7 +9889,6 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2054728726}
   - {fileID: 404501508}
   - {fileID: 1540257951}
   m_Father: {fileID: 1035337173}
@@ -12928,50 +12934,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2048023517}
-  m_CullTransparentMesh: 1
---- !u!1 &2054728725
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2054728726}
-  - component: {fileID: 2054728728}
-  m_Layer: 5
-  m_Name: Changejob
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &2054728726
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2054728725}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1605056680}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 440}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &2054728728
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2054728725}
   m_CullTransparentMesh: 1
 --- !u!1 &2083303980
 GameObject:
