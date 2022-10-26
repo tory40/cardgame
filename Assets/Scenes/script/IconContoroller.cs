@@ -24,6 +24,7 @@ public class IconContoroller : MonoBehaviour
     public void Init(string iconID)
     {
         model = new IconModel(iconID);
+        Debug.Log(view);
         view.Show(model);
     }
     public void Open()

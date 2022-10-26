@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    List<string> mycommands = new List<string>();
     [SerializeField] Transform mystatusfield;
     [SerializeField] Transform enemystatusfield;
     [SerializeField] StatusContoroller statussample;
@@ -34,6 +33,9 @@ public class GameManager : MonoBehaviourPunCallbacks
     StatusContoroller mystatus;
     StatusContoroller enemystatus;
     [SerializeField] Image playercolor;
+    [SerializeField] Text myjobname;
+    [SerializeField] Text enemyjobname;
+    JobEntity changejob;
     public void Start()
     {
         mystatus = Instantiate(statussample, mystatusfield, false);
@@ -43,11 +45,27 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public void ChangeWork()
     {
-        for (int i = 0; i < mycommands.Count; ++i)
+        for (int i = 0; i < changejob.commandlist.Length; ++i)
         {
-            MyInstance(mycommands[i]);
-            photonView.RPC(nameof(EnemyInstance), RpcTarget.Others, mycommands[i]);
+            MyInstance(changejob.commandlist[i]);
+            photonView.RPC(nameof(EnemyInstance), RpcTarget.Others, changejob.commandlist[i]);
         }
+        MyJobInstance();
+        photonView.RPC(nameof(EnemyJobInstance), RpcTarget.Others);
+    }
+    public void MyJobInstance()
+    {
+
+    }
+    [PunRPC]
+    public void EnemyJobInstance()
+    {
+
+    }
+    [PunRPC]
+    public void EnemyJobName(string jobname)
+    {
+        enemyjobname.text = jobname;
     }
     public void StartGame()
     {
@@ -67,9 +85,9 @@ public class GameManager : MonoBehaviourPunCallbacks
             Destroy(child.gameObject);
         }
         photonView.RPC(nameof(BBB), RpcTarget.Others);
-        mycommands.Clear();
-        JobEntity jobEntity = Resources.Load<JobEntity>("JobList/" + job);
-        mycommands = new List<string>(jobEntity.commandlist);
+        changejob = Resources.Load<JobEntity>("JobList/" + job);
+        myjobname.text = changejob.jobname;
+        photonView.RPC(nameof(EnemyJobName), RpcTarget.Others, changejob.jobname);
         ChangeWork();
     }
     [PunRPC]

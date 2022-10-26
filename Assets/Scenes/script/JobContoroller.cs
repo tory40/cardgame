@@ -1,23 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class JobContoroller : MonoBehaviour
 {
-    public JobModel jobmodel;
+    JobEntity jobEntity;
     public JobView jobview;
+    public UnityAction<JobEntity> OnClickAction;
+    JobCondition jobCondition;
     void Start()
     {
         
+    }
+    public void Set(JobEntity jobEntity)
+    {
+        this.jobEntity = jobEntity;
+        jobview.Show(jobEntity);
     }
 
     private void Awake()
     {
         jobview = GetComponent<JobView>();
     }
-    public void Init(string JobID)
+    public void Click()
     {
-        jobmodel = new JobModel(JobID);
-        jobview.Show(jobmodel);
+        OnClickAction?.Invoke(jobEntity);
+    }
+    public void ChangeColor()
+    {
+        
     }
 }
