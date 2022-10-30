@@ -26,6 +26,7 @@ public class JobCondition : MonoBehaviour
 
     public void JobChange()
     {
-
+        GameObject.Find("GameManager").GetComponent<GameManager>().JobClose();
+        GameObject.Find("GameManager").GetComponent<GameManager>().ChangeJob(setjob.name);
     }
 }

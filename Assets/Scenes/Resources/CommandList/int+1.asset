@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: int+1
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 9e12ba5ad81fed745b03e31ad9acf38c, type: 3}
-  time: 3
+  time: 7
   strtime: 0
   inteltime: 0
   dextime: 0
   hp: 0
   str: 0
-  intel: 2
+  intel: 5
   dex: 0
   power: 0
   magic: 0

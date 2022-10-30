@@ -12,7 +12,7 @@ public class JobContoroller : MonoBehaviour
     public bool mine;
     void Start()
     {
-        
+       
     }
     public void Set(JobEntity jobEntity)
     {
@@ -27,6 +27,7 @@ public class JobContoroller : MonoBehaviour
     public void Click()
     {
         OnClickAction?.Invoke(jobEntity);
+
     }
     public void ChangeColor()
     {

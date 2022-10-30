@@ -10,8 +10,17 @@ public class JobInstance : MonoBehaviour
     [SerializeField] List<JobEntity> jobentitys;
     List<JobContoroller> jobEntityLists = new List<JobContoroller>();
     public bool mine;
+    public StatusContoroller status;
     private void Start()
     {
+        if(mine)
+        {
+            status = GameObject.Find("GameManager").GetComponent<GameManager>().mystatus;
+        }
+        else
+        {
+            status = GameObject.Find("GameManager").GetComponent<GameManager>().enemystatus;
+        }
         foreach(var jobEntity in jobentitys)
         {
             Spawn(jobEntity);

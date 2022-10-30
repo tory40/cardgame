@@ -16,13 +16,14 @@ public class StatusModel
     public int barrier;
     public StatusModel(bool mine)
     {
+        normalHp = 1000;
         Hplevel = 1;
         maxHp = 1000;
         restHp = 1000;
         sTR = 10;
         iNT = 10;
         dEX = 10;
-        HPper = 0;
+        HPper = 1;
         if(mine)
         {
             color = new Color(0f, 0f, 1f, 0.5f);

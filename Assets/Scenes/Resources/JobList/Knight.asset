@@ -20,7 +20,9 @@ MonoBehaviour:
   needint: 0
   needdex: 0
   commandlist:
-  - hp+1
+  - hp+0
+  - str+0
   - str+1
-  - int+1
-  - dex+1
+  - int+0
+  - dex+0
+  - punch+0

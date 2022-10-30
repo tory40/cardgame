@@ -31,8 +31,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     float normalper;
     float smallper;
     float missper;
-    StatusContoroller mystatus;
-    StatusContoroller enemystatus;
+    public StatusContoroller mystatus;
+    public StatusContoroller enemystatus;
     [SerializeField] Image playercolor;
     [SerializeField] Text myjobname;
     [SerializeField] Text enemyjobname;
@@ -138,6 +138,11 @@ public class GameManager : MonoBehaviourPunCallbacks
             enemyclose.SetActive(false);
         }
     }
+    public void JobClose()
+    {
+            myopen.SetActive(false);
+            myclose.SetActive(true);
+    }
     public void SetCommand(IconModel model)
     {
         sendact = model.commandname;
@@ -216,80 +221,97 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         inteasy[8].text = (phy + ((model.magic) * (statusA.iNT))).ToString();
         inteasy[9].text = "Å~"+model.criticalpower.ToString("0.0");
-        randomper = (statusB.dEX) / (statusA.dEX) * 100;
-        if (randomper<model.criticalhit)
+        if (model.smallhit != 0) 
         {
-            criticalper = 100f;
+            randomper = (statusB.dEX / statusA.dEX) * 100;
+            if (randomper < model.criticalhit)
+            {
+                criticalper = 100f;
+            }
+            else
+            {
+                criticalper = (model.criticalhit / randomper) * 100;
+            }
+            inteasy[10].text = criticalper.ToString("0.0") + "%";
+            inteasy[11].text = "Å~" + model.bigpower.ToString("0.0");
+            if (randomper < model.criticalhit)
+            {
+                bigper = 0f;
+            }
+            else if (randomper > model.bighit)
+            {
+                bigper = ((model.bighit - model.criticalhit) / randomper * 100);
+            }
+            else
+            {
+                bigper = ((randomper - model.criticalhit) / randomper * 100);
+            }
+            inteasy[12].text = bigper.ToString("0.0") + "%";
+            inteasy[13].text = "Å~" + model.normalpower.ToString("0.0");
+            if (randomper < model.bighit)
+            {
+                normalper = 0f;
+            }
+            else if (randomper > model.normalhit)
+            {
+                normalper = ((model.normalhit - model.bighit) / randomper * 100);
+            }
+            else
+            {
+                normalper = ((randomper - model.bighit) / randomper * 100);
+            }
+            inteasy[14].text = normalper.ToString("0.0") + "%";
+            inteasy[15].text = "Å~" + model.smallpower.ToString("0.0");
+            if (randomper < model.normalhit)
+            {
+                smallper = 0f;
+            }
+            else if (randomper > model.smallhit)
+            {
+                smallper = ((model.smallhit - model.normalhit) / randomper * 100);
+            }
+            else
+            {
+                smallper = ((randomper - model.normalhit) / randomper * 100);
+            }
+            inteasy[16].text = smallper.ToString("0.0") + "%";
+            if (model.smallhit == 0)
+            {
+                missper = 0f;
+            }
+            else if (randomper < model.smallhit)
+            {
+                missper = 0f;
+            }
+            else
+            {
+                missper = ((randomper - model.smallhit) / randomper * 100);
+            }
+            inteasy[17].text = missper.ToString("0.0") + "%";
+            if (model.additionalhit != 0)
+            {
+                additional = statusA.dEX / model.additionalhit;
+            }
+            else
+            {
+                additional = 0;
+            }
+            inteasy[18].text = (model.hit + additional).ToString("0.00");
+            inteasy[19].text = "Å~0.0";
         }
         else
         {
-            criticalper = (model.criticalhit / randomper) * 100;
+            inteasy[9].text = "--";
+            inteasy[10].text = "--";
+            inteasy[11].text = "--";
+            inteasy[12].text = "--";
+            inteasy[13].text = "--";
+            inteasy[14].text = "--";
+            inteasy[15].text = "--";
+            inteasy[16].text = "--";
+            inteasy[17].text = "--";
+            inteasy[19].text = "--";
         }
-        inteasy[10].text = criticalper.ToString("0.0")+"%";
-        inteasy[11].text = "Å~" + model.bigpower.ToString("0.0");
-        if (randomper < model.criticalhit)
-        {
-            bigper = 0f;
-        }
-        else if(randomper > model.bighit)
-        {
-            bigper = ((model.bighit - model.criticalhit) / randomper * 100);
-        }
-        else
-        {
-            bigper = ((randomper - model.criticalhit) / randomper * 100);
-        }
-        inteasy[12].text = bigper.ToString("0.0")+"%";
-        inteasy[13].text = "Å~" + model.normalpower.ToString("0.0");
-        if (randomper < model.bighit)
-        {
-            normalper = 0f;
-        }
-        else if (randomper > model.normalhit)
-        {
-            normalper = ((model.normalhit - model.bighit) / randomper * 100);
-        }
-        else
-        {
-            normalper = ((randomper - model.bighit) / randomper * 100);
-        }
-        inteasy[14].text = normalper.ToString("0.0")+"%";
-        inteasy[15].text = "Å~" + model.smallpower.ToString("0.0");
-        if (randomper < model.normalhit)
-        {
-            smallper = 0f;
-        }
-        else if (randomper > model.smallhit)
-        {
-            smallper = ((model.smallhit - model.normalhit) / randomper * 100);
-        }
-        else
-        {
-            smallper = ((randomper - model.normalhit) / randomper * 100);
-        }
-        inteasy[16].text = smallper.ToString("0.0")+"%";
-        if(model.smallhit == 0)
-        {
-            missper = 0f;
-        }
-        else if (randomper < model.smallhit)
-        {
-            missper = 0f;
-        }
-        else
-        {
-            missper = ((randomper - model.smallhit) / randomper * 100);
-        }
-        inteasy[17].text = missper.ToString("0.0")+"%";
-        if(model.additionalhit!=0)
-        {
-            additional = statusA.dEX / model.additionalhit;
-        }
-        else
-        {
-            additional = 0;
-        }
-        inteasy[18].text = (model.hit + additional).ToString("0.00");
     }
     public void CommandAttack()
     {

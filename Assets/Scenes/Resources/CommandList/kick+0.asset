@@ -10,30 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a0bd998fe2039b34f9b4ffe61c212182, type: 3}
-  m_Name: kick
+  m_Name: kick+0
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 034947de07edcc644a0c0207edd5aabc, type: 3}
-  time: 10
+  icon: {fileID: 21300000, guid: ba9c6e51599493e4dac56ca8e25d986f, type: 3}
+  time: 5
   strtime: 0
   inteltime: 0
   dextime: 0
   hp: 0
-  str: 20
+  str: 0
   intel: 0
   dex: 0
   power: 0
   magic: 0
-  speed: 0
-  deffence: 0
-  criticalhit: 0
-  criticalpower: 0
-  bighit: 0
-  bigpower: 0
-  normalhit: 0
-  normalpower: 0
-  smallhit: 0
-  smallpower: 0
-  hit: 0
+  speed: 10
+  deffence: 5
+  criticalhit: 5
+  criticalpower: 3
+  bighit: 15
+  bigpower: 2
+  normalhit: 85
+  normalpower: 1
+  smallhit: 95
+  smallpower: 0.5
+  hit: 1
   additionalhit: 0
   healfixed: 0
   healpower: 0
