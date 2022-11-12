@@ -67,7 +67,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 16
+    m_FontSize: 12
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -496,3 +496,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mine: 0
+  iconimage: {fileID: 8578102508377971030}
+  iconname: {fileID: 7895620833739344101}
+  panel: {fileID: 5631223868414201448}
+  counttime: {fileID: 5631223868533451581}
+  slider: {fileID: 5631223868414201450}

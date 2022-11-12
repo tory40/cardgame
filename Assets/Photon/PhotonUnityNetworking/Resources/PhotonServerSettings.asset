@@ -50,6 +50,7 @@ MonoBehaviour:
   - StartJob
   - EnemyJobInstance
   - EnemyJobName
+  - EnemySerectJob
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

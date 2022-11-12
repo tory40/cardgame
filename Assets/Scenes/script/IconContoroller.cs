@@ -15,7 +15,15 @@ public class IconContoroller : MonoBehaviour
 
     void OnEndAction()
     {
-        gameManager.Actcommand(model);
+        gameManager.initmodel = model;
+        if (model.myact)
+        {
+            gameManager.ActMycommand();
+        }
+        else
+        {
+            gameManager.ActEnemycommand();
+        }
     }
     private void Awake()
     {

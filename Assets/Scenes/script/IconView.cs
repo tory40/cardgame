@@ -8,7 +8,6 @@ public class IconView : MonoBehaviour
 {
     [SerializeField] Image iconimage;
     [SerializeField] Text iconname;
-    [SerializeField] Text time;
     [SerializeField] GameObject panel;
     [SerializeField] Text counttime;
     [SerializeField] Slider slider;

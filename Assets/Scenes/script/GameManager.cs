@@ -20,6 +20,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     List<IconContoroller> enemyacts = new List<IconContoroller>();
     List<IconContoroller> actscommand = new List<IconContoroller>();
     List<IconContoroller> enemyactscommand = new List<IconContoroller>();
+    List<JobChangeContoroller> jobsInstance = new List<JobChangeContoroller>();
+    List<JobChangeContoroller> enemyjobsInstance = new List<JobChangeContoroller>();
+    List<bool> actsjob = new List<bool>();
+    List<bool> enemyactsjob = new List<bool>();
     string sendact;
     [SerializeField] Text[] intpower;
     [SerializeField] Text[] inteasy;
@@ -37,6 +41,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] Text myjobname;
     [SerializeField] Text enemyjobname;
     JobEntity changejob;
+    JobChangeContoroller myjobChange;
+    JobChangeContoroller enemyjobChange;
     public void Start()
     {
         mystatus = Instantiate(statussample, mystatusfield, false);
@@ -56,14 +62,14 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public void MyJobInstance()
     {
-        JobChangeContoroller jobChange = Instantiate(jobChangeprefab, myfield, false);
-        jobChange.mine = true;
+        myjobChange = Instantiate(jobChangeprefab, myfield, false);
+        myjobChange.mine = true;
     }
     [PunRPC]
     public void EnemyJobInstance()
     {
-        JobChangeContoroller jobChange = Instantiate(jobChangeprefab, enemyfield, false);
-        jobChange.mine = false;
+        enemyjobChange = Instantiate(jobChangeprefab, enemyfield, false);
+        enemyjobChange.mine = false;
     }
     [PunRPC]
     public void EnemyJobName(string jobname)
@@ -79,6 +85,32 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         ChangeJob(job);
         photonView.RPC(nameof(ChangeJob), RpcTarget.Others, job);
+    }
+    public void Serectjob(JobEntity setjob)
+    {
+        JobChangeContoroller job = Instantiate(jobChangeprefab, mycommand, false);
+        job.mine = true;
+        job.sersctjob = setjob;
+        jobsInstance.Add(job);
+        actsjob.Add(false);
+        if (actsjob.Count == 1)
+        {
+            MyCommandView();
+        }
+        photonView.RPC(nameof(EnemySerectJob), RpcTarget.Others,setjob.name);
+    }
+    [PunRPC]
+    public void EnemySerectJob(string setjob)
+    {
+        JobChangeContoroller job = Instantiate(jobChangeprefab, enemycommand, false);
+        job.mine = false;
+        job.sersctjob = Resources.Load<JobEntity>("JobList/" + setjob);
+        enemyjobsInstance.Add(job);
+        enemyactsjob.Add(false);
+        if (actsjob.Count == 1)
+        {
+            EnemyCommandView();
+        }
     }
     [PunRPC]
     public void ChangeJob(string job)
@@ -223,7 +255,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         inteasy[9].text = "Å~"+model.criticalpower.ToString("0.0");
         if (model.smallhit != 0) 
         {
-            randomper = (statusB.dEX / statusA.dEX) * 100;
+            randomper = (((float)statusB.dEX / statusA.dEX) * 100);
+            Debug.Log(randomper);
             if (randomper < model.criticalhit)
             {
                 criticalper = 100f;
@@ -325,7 +358,8 @@ public class GameManager : MonoBehaviourPunCallbacks
         act.Init(command);
         act.Mine();
         actscommand.Add(act);
-        if(actscommand.Count ==1)
+        actsjob.Add(true);
+        if(actsjob.Count ==1)
         {
             MyCommandView();
         }
@@ -336,49 +370,103 @@ public class GameManager : MonoBehaviourPunCallbacks
         IconContoroller act = Instantiate(actprefab, enemycommand, false);
         act.Init(command);
         enemyactscommand.Add(act);
-        if (enemyactscommand.Count == 1)
+        enemyactsjob.Add(true);
+        if (enemyactsjob.Count == 1)
         {
             EnemyCommandView();
         }
     }
     public void MyCommandView()
     {
-        IconModel model = actscommand[0].GetComponent<IconContoroller>().model;
-        float time = model.time + (model.strtime / mystatus.statusmodel.sTR) + (model.inteltime / mystatus.statusmodel.iNT) + (model.dextime / mystatus.statusmodel.dEX);
-        actscommand[0].SetStart(time);
+        if (actsjob[0])
+        {
+            IconModel model = actscommand[0].GetComponent<IconContoroller>().model;
+            float time = model.time + (model.strtime / mystatus.statusmodel.sTR) + (model.inteltime / mystatus.statusmodel.iNT) + (model.dextime / mystatus.statusmodel.dEX);
+            actscommand[0].SetStart(time);
+        }
+        else
+        {
+            jobsInstance[0].JobChange();
+        }
     }
     public void EnemyCommandView()
     {
-        IconModel model = enemyactscommand[0].GetComponent<IconContoroller>().model;
-        float time = model.time + (model.strtime / enemystatus.statusmodel.sTR) + (model.inteltime / enemystatus.statusmodel.iNT) + (model.dextime / enemystatus.statusmodel.dEX);
-        enemyactscommand[0].SetStart(time);
+        if (enemyactsjob[0])
+        {
+            IconModel model = enemyactscommand[0].GetComponent<IconContoroller>().model;
+            float time = model.time + (model.strtime / enemystatus.statusmodel.sTR) + (model.inteltime / enemystatus.statusmodel.iNT) + (model.dextime / enemystatus.statusmodel.dEX);
+            enemyactscommand[0].SetStart(time);
+        }
+        else
+        {
+            enemyjobsInstance[0].JobChange();
+        }
     }
-    public void Actcommand(IconModel model)
+    public IconModel initmodel;
+    public JobEntity initjob;
+    public void ActMycommand()
     {
-        if (model.myact)
+        if (actsjob[0])
         {
             Destroy(actscommand[0].gameObject);
             actscommand.RemoveAt(0);
-            if (actscommand.Count>0)
+            actsjob.RemoveAt(0);
+            Actprocess(mystatus,initmodel);
+        }
+        else
+        {
+            Destroy(jobsInstance[0].gameObject);
+            jobsInstance.RemoveAt(0);
+            actsjob.RemoveAt(0);
+            Jobprocess(true,initjob);
+        }
+        if (actsjob.Count > 0)
+        {
+            if (actsjob[0])
             {
                 IconModel nextmodel = actscommand[0].GetComponent<IconContoroller>().model;
                 float time = nextmodel.time + (nextmodel.strtime / mystatus.statusmodel.sTR) + (nextmodel.inteltime / mystatus.statusmodel.iNT) + (nextmodel.dextime / mystatus.statusmodel.dEX);
                 actscommand[0].SetStart(time);
             }
-            Actprocess(mystatus,model);
+            else
+            {
+                jobsInstance[0].JobChange();
+            }
         }
-        else
+    }
+    public void ActEnemycommand()
+    {
+        if (enemyactsjob[0])
         {
             Destroy(enemyactscommand[0].gameObject);
             enemyactscommand.RemoveAt(0);
-            if (enemyactscommand.Count>0)
+            enemyactsjob.RemoveAt(0);
+            Actprocess(enemystatus, initmodel);
+        }
+        else
+        {
+            Destroy(enemyjobsInstance[0].gameObject);
+            enemyjobsInstance.RemoveAt(0);
+            enemyactsjob.RemoveAt(0);
+            Jobprocess(false, initjob);
+        }
+        if (enemyactsjob.Count > 0)
+        {
+            if (enemyactsjob[0])
             {
                 IconModel nextmodel = enemyactscommand[0].GetComponent<IconContoroller>().model;
                 float time = nextmodel.time + (nextmodel.strtime / enemystatus.statusmodel.sTR) + (nextmodel.inteltime / enemystatus.statusmodel.iNT) + (nextmodel.dextime / enemystatus.statusmodel.dEX);
                 enemyactscommand[0].SetStart(time);
             }
-            Actprocess(enemystatus,model);
+            else
+            {
+                enemyjobsInstance[0].JobChange();
+            }
         }
+    }
+    public void Jobprocess(bool mine,JobEntity jobentity)
+    {
+
     }
     float hitinit;
     int hitcount;
