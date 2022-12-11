@@ -227,6 +227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jobview: {fileID: 0}
+  mine: 0
 --- !u!114 &7559412196242454958
 MonoBehaviour:
   m_ObjectHideFlags: 0

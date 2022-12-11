@@ -4571,6 +4571,8 @@ MonoBehaviour:
   myclose: {fileID: 78428964}
   enemyopen: {fileID: 471423086}
   enemyclose: {fileID: 2025523317}
+  minecondition: {fileID: 497825965}
+  enemycondition: {fileID: 1852089072}
   initjob: {fileID: 0}
 --- !u!4 &596764813
 Transform:

@@ -27,7 +27,15 @@ public class JobContoroller : MonoBehaviour
     public void Click()
     {
         OnClickAction?.Invoke(jobEntity);
-
+        GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        if(mine)
+        {
+            gameManager.minecondition.SetActive(true);
+        }
+        else
+        {
+            gameManager.enemycondition.SetActive(true);
+        }
     }
     public void ChangeColor()
     {

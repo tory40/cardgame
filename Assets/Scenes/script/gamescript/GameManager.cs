@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         mystatus.Init(true);
         enemystatus = Instantiate(statussample, enemystatusfield, false);
         enemystatus.Init(false);
+        StartGame();
     }
     public void ChangeWork()
     {
@@ -96,6 +97,10 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (actsjob.Count == 1)
         {
             MyCommandView();
+        }
+        if (enemyactsjob.Count == 1)
+        {
+            EnemyCommandView();
         }
         photonView.RPC(nameof(EnemySerectJob), RpcTarget.Others,setjob.name);
     }
@@ -157,17 +162,21 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] GameObject myclose;
     [SerializeField] GameObject enemyopen;
     [SerializeField] GameObject enemyclose;
+    [SerializeField] public GameObject minecondition;
+    [SerializeField] public GameObject enemycondition;
     public void JobClick(bool mine)
     {
         if (mine)
         {
             myopen.SetActive(true);
             myclose.SetActive(false);
+            minecondition.SetActive(false);
         }
         else
         {
             enemyopen.SetActive(true);
             enemyclose.SetActive(false);
+            enemycondition.SetActive(false);
         }
     }
     public void JobClose()
@@ -466,7 +475,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public void Jobprocess(bool mine,JobEntity jobentity)
     {
-
+        if(mine)
+        {
+            ChangeJob(jobentity.name);
+        }
     }
     float hitinit;
     int hitcount;
