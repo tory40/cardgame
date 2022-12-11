@@ -318,7 +318,6 @@ GameObject:
   - component: {fileID: 681615921}
   - component: {fileID: 681615920}
   - component: {fileID: 681615919}
-  - component: {fileID: 681615918}
   m_Layer: 5
   m_Name: Free
   m_TagString: Untagged
@@ -346,19 +345,6 @@ RectTransform:
   m_AnchoredPosition: {x: -320, y: 0}
   m_SizeDelta: {x: 300, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &681615918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 681615916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7ea2f31824847c4e948cdfcb239213f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  input: 1
 --- !u!114 &681615919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,16 +389,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 681615918}
+      - m_Target: {fileID: 725669432}
         m_TargetAssemblyTypeName: PhotonSet, Assembly-CSharp
         m_MethodName: Wait
-        m_Mode: 1
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Free
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &681615920
@@ -453,6 +439,49 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 681615916}
   m_CullTransparentMesh: 1
+--- !u!1 &725669431
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 725669433}
+  - component: {fileID: 725669432}
+  m_Layer: 0
+  m_Name: PhotonSet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &725669432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725669431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7ea2f31824847c4e948cdfcb239213f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &725669433
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725669431}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 541.14606, y: 276.33917, z: -23.803997}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1165207083
 GameObject:
   m_ObjectHideFlags: 0
@@ -767,7 +796,6 @@ GameObject:
   - component: {fileID: 1710843704}
   - component: {fileID: 1710843703}
   - component: {fileID: 1710843702}
-  - component: {fileID: 1710843701}
   m_Layer: 5
   m_Name: Room
   m_TagString: Untagged
@@ -795,19 +823,6 @@ RectTransform:
   m_AnchoredPosition: {x: 320, y: 0}
   m_SizeDelta: {x: 300, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1710843701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1710843699}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7ea2f31824847c4e948cdfcb239213f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  input: 3
 --- !u!114 &1710843702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -852,16 +867,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1710843701}
+      - m_Target: {fileID: 725669432}
         m_TargetAssemblyTypeName: PhotonSet, Assembly-CSharp
         m_MethodName: Wait
-        m_Mode: 1
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Room
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1710843703
@@ -993,7 +1008,6 @@ GameObject:
   - component: {fileID: 2051275436}
   - component: {fileID: 2051275435}
   - component: {fileID: 2051275434}
-  - component: {fileID: 2051275433}
   m_Layer: 5
   m_Name: Rank
   m_TagString: Untagged
@@ -1021,19 +1035,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 300, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2051275433
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2051275431}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7ea2f31824847c4e948cdfcb239213f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  input: 2
 --- !u!114 &2051275434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1078,16 +1079,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2051275433}
+      - m_Target: {fileID: 725669432}
         m_TargetAssemblyTypeName: PhotonSet, Assembly-CSharp
         m_MethodName: Wait
-        m_Mode: 1
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Rank
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &2051275435
