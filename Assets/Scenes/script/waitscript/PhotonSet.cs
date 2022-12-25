@@ -33,11 +33,18 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     {
         // "Room"という名前のルームに参加する（ルームが存在しなければ作成して参加する）
         // 退出時にも呼ばれる
-        if (firstRoom)
+        try
         {
-            firstInit = false;
-            firstRoom = false;
-            PhotonNetwork.JoinOrCreateRoom(roomtype, new RoomOptions() { MaxPlayers = 2 }, TypedLobby.Default);
+            if (firstRoom)
+            {
+                firstInit = false;
+                firstRoom = false;
+                PhotonNetwork.JoinOrCreateRoom(roomtype, new RoomOptions() { MaxPlayers = 2 }, TypedLobby.Default);
+            }
+        }
+        catch
+        {
+            Debug.Log("ルームが満員です");
         }
     }
 
