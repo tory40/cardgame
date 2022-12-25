@@ -2,12 +2,13 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 // MonoBehaviourPunCallbacksを継承して、PUNのコールバックを受け取れるようにする
 public class PhotonSet : MonoBehaviourPunCallbacks
 {
     string roomtype;
-    bool firstInit=false;
+    bool firstInit=true;
     bool firstPlayer;
     bool firstRoom = true;
     public void Wait(string type)
@@ -20,6 +21,7 @@ public class PhotonSet : MonoBehaviourPunCallbacks
         {
         if (!firstInit)
         {
+            Debug.Log(PhotonNetwork.CountOfPlayers);
             if (PhotonNetwork.CountOfPlayers >= 2)
             {
                 Debug.Log("a");
@@ -53,18 +55,20 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     {
         if(PhotonNetwork.CountOfPlayers==1)
         {
-            firstPlayer = true;
+            firstPlayer = false;
             Debug.Log(PhotonNetwork.CountOfPlayers.ToString());
         }
         else if (PhotonNetwork.CountOfPlayers == 2)
         {
-            firstPlayer = false;
+            firstPlayer = true;
+            Debug.Log("abc");
             Debug.Log(PhotonNetwork.CountOfPlayers.ToString());
         }
         else
         {
             Debug.Log("人数設定エラー"+ PhotonNetwork.CountOfPlayers.ToString());
         }
+        firstInit = false;
     }
     public void RandomRoom()
     {
@@ -77,8 +81,7 @@ public class PhotonSet : MonoBehaviourPunCallbacks
             {
                 Debug.Log("u");
                 PhotonNetwork.LeaveRoom();
-                PhotonNetwork.JoinOrCreateRoom(roomtype + random.ToString(), new RoomOptions() { MaxPlayers = 2 }, TypedLobby.Default);
-                SceneManager.LoadScene("SampleScene");
+                StartCoroutine(OnJoinRoom(random));
             }
             catch
             {
@@ -93,13 +96,18 @@ public class PhotonSet : MonoBehaviourPunCallbacks
         try
         {
             PhotonNetwork.LeaveRoom();
-            PhotonNetwork.JoinOrCreateRoom(roomtype + random.ToString(), new RoomOptions() { MaxPlayers = 2 }, TypedLobby.Default);
-            SceneManager.LoadScene("SampleScene");
+            StartCoroutine(OnJoinRoom(random));
         }
         catch
         {
             firstRoom = true;
             PhotonNetwork.LeaveRoom();
         }
+    }
+    IEnumerator OnJoinRoom(int random)
+    {
+        yield return new WaitForSeconds(5);
+        PhotonNetwork.JoinOrCreateRoom(roomtype+random.ToString(), new RoomOptions() { MaxPlayers = 2 }, TypedLobby.Default);
+        SceneManager.LoadScene("SampleScene");
     }
 }
