@@ -7284,6 +7284,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1276503066}
   - component: {fileID: 1276503067}
+  - component: {fileID: 1276503068}
   m_Layer: 0
   m_Name: PhotonSet
   m_TagString: Untagged
@@ -7317,6 +7318,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7ea2f31824847c4e948cdfcb239213f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1276503068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1276503065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 3
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &1284853720
 GameObject:
   m_ObjectHideFlags: 0

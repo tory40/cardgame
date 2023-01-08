@@ -106,7 +106,7 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     }
     IEnumerator OnJoinRoom(int random)
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(10);
         PhotonNetwork.JoinOrCreateRoom(roomtype+random.ToString(), new RoomOptions() { MaxPlayers = 2 }, TypedLobby.Default);
         SceneManager.LoadScene("SampleScene");
     }
