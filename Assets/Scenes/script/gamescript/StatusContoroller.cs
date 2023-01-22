@@ -18,6 +18,14 @@ public class StatusContoroller : MonoBehaviour
     {
         statusmodel = new StatusModel(mine);
         statusview.Show(statusmodel);
+        if(mine)
+        {
+            gameObject.name = "Mystatus";
+        }
+        else
+        {
+            gameObject.name = "Enemystatus";
+        }
     }
     public void ChangeMaxHP(int change)
     {
@@ -30,6 +38,10 @@ public class StatusContoroller : MonoBehaviour
     public void ChangeDamage(int change)
     {
         statusmodel.restHp -= change;
+        if(statusmodel.restHp<0)
+        {
+            statusmodel.restHp = 0;
+        }
         statusview.Show(statusmodel);
     }
     public void ChangeHeal(int change)

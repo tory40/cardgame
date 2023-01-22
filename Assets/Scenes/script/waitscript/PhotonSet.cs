@@ -11,6 +11,8 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     bool firstInit=true;
     bool firstPlayer;
     bool firstRoom = true;
+    bool joinroom =false;
+    int random;
     public void Wait(string type)
     {
         // PhotonServerSettingsの設定内容を使ってマスターサーバーへ接続する
@@ -35,19 +37,25 @@ public class PhotonSet : MonoBehaviourPunCallbacks
     {
         // "Room"という名前のルームに参加する（ルームが存在しなければ作成して参加する）
         // 退出時にも呼ばれる
-        try
+        if (firstRoom)
         {
-            if (firstRoom)
-            {
-                firstInit = false;
-                firstRoom = false;
-                PhotonNetwork.JoinOrCreateRoom(roomtype, new RoomOptions() { MaxPlayers = 2 }, TypedLobby.Default);
-            }
-        }
-        catch
-        {
-            Debug.Log("ルームが満員です");
-        }
+             firstInit = false;
+             firstRoom = false;
+             PhotonNetwork.JoinOrCreateRoom(roomtype, new RoomOptions() { MaxPlayers = 2 }, TypedLobby.Default);
+         }
+         else
+         {
+             PhotonNetwork.JoinOrCreateRoom(roomtype + random.ToString(), new RoomOptions() { MaxPlayers = 2 }, TypedLobby.Default);
+         }
+    }
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        base.OnJoinRoomFailed(returnCode, message);
+        firstInit = true;
+        firstRoom = true;
+        joinroom = false;
+        OnConnectedToMaster();
+
     }
 
     // ゲームサーバーへの接続が成功した時に呼ばれるコールバック
@@ -68,46 +76,32 @@ public class PhotonSet : MonoBehaviourPunCallbacks
         {
             Debug.Log("人数設定エラー"+ PhotonNetwork.CountOfPlayers.ToString());
         }
-        firstInit = false;
+        if (!joinroom)
+        {
+            firstInit = false;
+        }
+        else
+        {
+            SceneManager.LoadScene("SampleScene");
+        }
     }
     public void RandomRoom()
     {
         if(firstPlayer)
         {
             Debug.Log("i");
-            int random =Random.Range(0, 10000);
+            random =Random.Range(0, 10000);
             photonView.RPC(nameof(RanDomRoom2), RpcTarget.Others,random);
-            try
-            {
-                Debug.Log("u");
-                PhotonNetwork.LeaveRoom();
-                StartCoroutine(OnJoinRoom(random));
-            }
-            catch
-            {
-                firstRoom = true;
-                PhotonNetwork.LeaveRoom();
-            }
+            joinroom = true;
+            Debug.Log("u");
+            PhotonNetwork.LeaveRoom();
         }
     }
     [PunRPC]
-    public void RanDomRoom2(int random)
+    public void RanDomRoom2(int randomint)
     {
-        try
-        {
-            PhotonNetwork.LeaveRoom();
-            StartCoroutine(OnJoinRoom(random));
-        }
-        catch
-        {
-            firstRoom = true;
-            PhotonNetwork.LeaveRoom();
-        }
-    }
-    IEnumerator OnJoinRoom(int random)
-    {
-        yield return new WaitForSeconds(10);
-        PhotonNetwork.JoinOrCreateRoom(roomtype+random.ToString(), new RoomOptions() { MaxPlayers = 2 }, TypedLobby.Default);
-        SceneManager.LoadScene("SampleScene");
+        random = randomint;
+        joinroom = true;
+        PhotonNetwork.LeaveRoom();
     }
 }

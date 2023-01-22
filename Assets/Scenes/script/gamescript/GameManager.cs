@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public void StartGame()
     {
-        photonView.RPC(nameof(StartJob), RpcTarget.Others, "Adventurer");
+        photonView.RPC(nameof(StartJob), RpcTarget.Others, "冒険者");
     }
     [PunRPC]
     public void StartJob(string job)
@@ -89,20 +89,25 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public void Serectjob(JobEntity setjob)
     {
-        JobChangeContoroller job = Instantiate(jobChangeprefab, mycommand, false);
-        job.mine = true;
-        job.sersctjob = setjob;
-        jobsInstance.Add(job);
-        actsjob.Add(false);
-        if (actsjob.Count == 1)
+        if (actsjob.Count<3)
         {
-            MyCommandView();
+            JobChangeContoroller job = Instantiate(jobChangeprefab, mycommand, false);
+            job.mine = true;
+            job.command = true;
+            job.iconname.text = setjob.name;
+            job.sersctjob = setjob;
+            jobsInstance.Add(job);
+            actsjob.Add(false);
+            if (actsjob.Count == 1)
+            {
+                MyCommandView();
+            }
+            photonView.RPC(nameof(EnemySerectJob), RpcTarget.Others, setjob.name);
         }
-        if (enemyactsjob.Count == 1)
+        else
         {
-            EnemyCommandView();
+            Debug.Log("コマンドは三つまで!");
         }
-        photonView.RPC(nameof(EnemySerectJob), RpcTarget.Others,setjob.name);
     }
     [PunRPC]
     public void EnemySerectJob(string setjob)
@@ -112,7 +117,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         job.sersctjob = Resources.Load<JobEntity>("JobList/" + setjob);
         enemyjobsInstance.Add(job);
         enemyactsjob.Add(false);
-        if (actsjob.Count == 1)
+        if (enemyactsjob.Count == 1)
         {
             EnemyCommandView();
         }
@@ -171,12 +176,14 @@ public class GameManager : MonoBehaviourPunCallbacks
             myopen.SetActive(true);
             myclose.SetActive(false);
             minecondition.SetActive(false);
+            GameObject.Find("MyJobCheck").GetComponent<JobInstance>().StatusUpdate(mystatus);
         }
         else
         {
             enemyopen.SetActive(true);
             enemyclose.SetActive(false);
             enemycondition.SetActive(false);
+            GameObject.Find("EnemyJobCheck").GetComponent<JobInstance>().StatusUpdate(enemystatus);
         }
     }
     public void JobClose()
@@ -357,8 +364,15 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public void CommandAttack()
     {
-        MyInstance2(sendact);
-        photonView.RPC(nameof(EnemyInstance2), RpcTarget.Others, sendact);
+        if (actsjob.Count<3) 
+        {
+            MyInstance2(sendact);
+            photonView.RPC(nameof(EnemyInstance2), RpcTarget.Others, sendact);
+        }
+        else
+        {
+            Debug.Log("コマンドは三つまで!");
+        }
     }
 
     public void MyInstance2(string command)
@@ -387,28 +401,34 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public void MyCommandView()
     {
-        if (actsjob[0])
+        if (!(enemystatus.statusmodel.restHp <= 0)&& !(mystatus.statusmodel.restHp <= 0))
         {
-            IconModel model = actscommand[0].GetComponent<IconContoroller>().model;
-            float time = model.time + (model.strtime / mystatus.statusmodel.sTR) + (model.inteltime / mystatus.statusmodel.iNT) + (model.dextime / mystatus.statusmodel.dEX);
-            actscommand[0].SetStart(time);
-        }
-        else
-        {
-            jobsInstance[0].JobChange();
+            if (actsjob[0])
+            {
+                IconModel model = actscommand[0].GetComponent<IconContoroller>().model;
+                float time = model.time + (model.strtime / mystatus.statusmodel.sTR) + (model.inteltime / mystatus.statusmodel.iNT) + (model.dextime / mystatus.statusmodel.dEX);
+                actscommand[0].SetStart(time);
+            }
+            else
+            {
+                jobsInstance[0].JobChange();
+            }
         }
     }
     public void EnemyCommandView()
     {
-        if (enemyactsjob[0])
+        if (!(enemystatus.statusmodel.restHp <= 0) && !(mystatus.statusmodel.restHp <= 0))
         {
-            IconModel model = enemyactscommand[0].GetComponent<IconContoroller>().model;
-            float time = model.time + (model.strtime / enemystatus.statusmodel.sTR) + (model.inteltime / enemystatus.statusmodel.iNT) + (model.dextime / enemystatus.statusmodel.dEX);
-            enemyactscommand[0].SetStart(time);
-        }
-        else
-        {
-            enemyjobsInstance[0].JobChange();
+            if (enemyactsjob[0])
+            {
+                IconModel model = enemyactscommand[0].GetComponent<IconContoroller>().model;
+                float time = model.time + (model.strtime / enemystatus.statusmodel.sTR) + (model.inteltime / enemystatus.statusmodel.iNT) + (model.dextime / enemystatus.statusmodel.dEX);
+                enemyactscommand[0].SetStart(time);
+            }
+            else
+            {
+                enemyjobsInstance[0].JobChange();
+            }
         }
     }
     public IconModel initmodel;
@@ -568,6 +588,34 @@ public class GameManager : MonoBehaviourPunCallbacks
                 }
             }
             photonView.RPC(nameof(Enemydamage), RpcTarget.Others, model.commandname,hitrange,damage);
+            if(enemystatus.statusmodel.restHp<=0)
+            {
+                Debug.Log("You Win");
+                if (actsjob.Count == 0)
+                {
+
+                }
+                else if (actsjob[0])
+                {
+                    actscommand[0].view.isDown = false;
+                }
+                else
+                {
+                    jobsInstance[0].isDown = false;
+                }
+                if (enemyactsjob.Count == 0)
+                {
+
+                }
+                else if (enemyactsjob[0])
+                {
+                    enemyactscommand[0].view.isDown = false;
+                }
+                else
+                {
+                    enemyjobsInstance[0].isDown = false;
+                }
+            }
         }
     }
     [PunRPC]
@@ -613,6 +661,35 @@ public class GameManager : MonoBehaviourPunCallbacks
             {
                 enemystatus.ChangeHeal(0);
             }
+        }
+        if (mystatus.statusmodel.restHp <= 0)
+        {
+            Debug.Log("You Lose");
+            if(actsjob.Count==0)
+            {
+
+            }
+            else if(actsjob[0])
+            {
+                actscommand[0].view.isDown = false;
+            }
+            else
+            {
+                jobsInstance[0].isDown = false;
+            }
+            if (enemyactsjob.Count == 0)
+            {
+
+            }
+            else if (enemyactsjob[0])
+            {
+                enemyactscommand[0].view.isDown = false;
+            }
+            else
+            {
+                enemyjobsInstance[0].isDown = false;
+            }
+
         }
     }
 }

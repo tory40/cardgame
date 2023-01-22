@@ -6,17 +6,24 @@ using UnityEngine.UI;
 public class JobChangeContoroller : MonoBehaviour
 {
     public bool mine;
-
+    public bool command=false;
     public JobEntity sersctjob;
     [SerializeField] Image iconimage;
-    [SerializeField] Text iconname;
+    [SerializeField] public Text iconname;
     [SerializeField] GameObject panel;
     [SerializeField] Text counttime;
     [SerializeField] Slider slider;
-    bool isDown;
+    public bool isDown;
     public void Click()
     {
-        GameObject.Find("GameManager").GetComponent<GameManager>().JobClick(mine);
+        if (!command)
+        {
+            GameObject.Find("GameManager").GetComponent<GameManager>().JobClick(mine);
+        }
+        else
+        {
+
+        }
     }
     public void JobChange()
     {

@@ -31,9 +31,15 @@ public class JobInstance : MonoBehaviour
         JobContoroller jobs = Instantiate(serectjobprefab, parent);
         jobs.mine = mine;
         jobs.Set(jobentity);
-        jobs.ChangeColor();
         jobEntityLists.Add(jobs);
         jobs.OnClickAction = jobCondition.UpdateUI;
         return jobs;
+    }
+    public void StatusUpdate(StatusContoroller status)
+    {
+        for (int i = 0; i < jobEntityLists.Count; ++i)
+        {
+            jobEntityLists[i].ChangeColor(status);
+        }
     }
 }

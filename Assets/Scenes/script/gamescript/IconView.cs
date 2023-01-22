@@ -12,7 +12,7 @@ public class IconView : MonoBehaviour
     [SerializeField] Text counttime;
     [SerializeField] Slider slider;
 
-    bool isDown;
+    public bool isDown;
 
     public UnityAction OnEndAction;
     private void Update()

@@ -2042,7 +2042,7 @@ GameObject:
   - component: {fileID: 274329876}
   - component: {fileID: 274329875}
   m_Layer: 5
-  m_Name: Button
+  m_Name: JobChanger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4230,6 +4230,7 @@ MonoBehaviour:
   strText: {fileID: 1555026509}
   intText: {fileID: 72460549}
   dexText: {fileID: 2083303982}
+  canchange: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -4941,7 +4942,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Adventurer
+          m_StringArgument: "\u5192\u967A\u8005"
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &670475164
@@ -6651,7 +6652,7 @@ GameObject:
   - component: {fileID: 1072168489}
   - component: {fileID: 1072168488}
   m_Layer: 5
-  m_Name: Mystatus
+  m_Name: MyStatus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10907,7 +10908,7 @@ GameObject:
   - component: {fileID: 1852089075}
   - component: {fileID: 1852089074}
   m_Layer: 5
-  m_Name: Condition
+  m_Name: EnemyCondition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10956,6 +10957,7 @@ MonoBehaviour:
   strText: {fileID: 6747595}
   intText: {fileID: 2114069752}
   dexText: {fileID: 825771339}
+  canchange: 0
 --- !u!114 &1852089075
 MonoBehaviour:
   m_ObjectHideFlags: 0

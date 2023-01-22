@@ -14,8 +14,10 @@ public class StatusModel
     public float HPper;
     public Color color;
     public int barrier;
+    public bool mine;
     public StatusModel(bool mine)
     {
+        this.mine = mine;
         normalHp = 1000;
         Hplevel = 1;
         maxHp = 1000;

@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b2a2d911d6b5154f875a4d6d0927b90, type: 3}
-  m_Name: Magicion
+  m_Name: "\u9A0E\u58EB"
   m_EditorClassIdentifier: 
-  jobname: "\u9B54\u6CD5\u4F7F\u3044"
+  jobname: "\u9A0E\u58EB"
   icon: {fileID: 0}
-  hplevel: 1
+  hplevel: 1.1
   time: 10
-  needstr: 0
-  needint: 20
+  needstr: 20
+  needint: 0
   needdex: 0
   commandlist:
   - hp+0
   - str+0
+  - str+1
   - int+0
-  - int+1
   - dex+0
-  - magic+0
+  - punch+0

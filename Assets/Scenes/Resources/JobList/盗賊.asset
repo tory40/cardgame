@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b2a2d911d6b5154f875a4d6d0927b90, type: 3}
-  m_Name: Thief
+  m_Name: "\u76D7\u8CCA"
   m_EditorClassIdentifier: 
   jobname: "\u76D7\u8CCA"
   icon: {fileID: 0}
